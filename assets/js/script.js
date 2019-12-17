@@ -34,6 +34,9 @@ playAgainButtonID.addEventListener("click", function (event) {
   startGame();
 });
 
+
+
+
 var timerIntervalID = 0;
 var score = 0;
 var secondsLeft = 0;
@@ -43,15 +46,17 @@ var status = "notplaying";
 function startGame() {
 
 
-  secondsLeft = 20;
+  secondsLeft = 60;
   timeLeftID.textContent = secondsLeft + " seconds left";
   timerIntervalID = setInterval(function () {
     secondsLeft--;
     timeLeftID.textContent = secondsLeft + " seconds left";
     if (secondsLeft <= 0) {
       stopGame();
+      return;
     }
   }, 1000);
+  displayQuestion();
 
 };
 
@@ -78,14 +83,14 @@ function displayQuestion() {
   currentQuestion = questions[arrayNumber];
   questionsLocationID.textContent = currentQuestion.question;
 
-  linebreakFunction()
+  linebreakFunction();
 
   choice0 = document.createElement("BUTTON");
   choice0.textContent = currentQuestion.choices[0];
   questionsLocationID.append(choice0);
   choice0Text = currentQuestion.choices[0];
 
-  linebreakFunction()
+  linebreakFunction();
 
   choice1 = document.createElement("BUTTON");
   choice1.textContent = currentQuestion.choices[1];
@@ -94,21 +99,21 @@ function displayQuestion() {
 
   answer = currentQuestion.answer;
 
+  choice0.addEventListener("click", clearCorrectIncorrect);
+  choice1.addEventListener("click", clearCorrectIncorrect);
+
   choice0.addEventListener("click", checkAnswer0);
   choice1.addEventListener("click", checkAnswer1);
 
-  choice0.addEventListener("click", setTimeout(clearCorrectIncorrect, 1000));
-  choice1.addEventListener("click", setTimeout(clearCorrectIncorrect, 1000));
-
-
-
-  // if (!questions[questionIndex]) {
-  //   // stop game, we've hit last question
-  //   return stopGame();
-  // }
 };
 
-displayQuestion();
+// if (!questions[questionIndex]) {
+//   // stop game, we've hit last question
+//   return stopGame();
+// }
+// };
+
+
 
 function linebreakFunction() {
   var linebreak = document.createElement("BR");
@@ -117,51 +122,48 @@ function linebreakFunction() {
 
 
 function removeQuestion() {
-  questions.splice(questions[arrayNumber]);
-  console.log(questions);
-
-}
+  questions.splice(arrayNumber, 1);
+  if (questions.length == 0) {
+    stopGame();
+    return;
+  };
+};
 
 function clearCorrectIncorrect() {
-  correctIncorrectID.textContent = "";
-}
+  setTimeout(correctIncorrectTimer, 1000);
+  function correctIncorrectTimer() {
+    correctIncorrectID.textContent = "";
+  };
+};
 
 
 function checkAnswer0() {
-  console.log(choice0Text);
-  console.log(answer);
-
-  console.log("hi");
 
   if (choice0Text === answer) {
     correctIncorrectID.textContent = ("Correct!");
   }
-
   else {
+    secondsLeft = secondsLeft - 15;
     correctIncorrectID.textContent = ("Incorrect.");
-  }
-
-
+  };
+  removeQuestion();
   displayQuestion();
 }
 
 
 function checkAnswer1() {
-  console.log(choice1Text);
-  console.log(answer);
-
-  console.log("bye");
 
   if (choice1Text === answer) {
     correctIncorrectID.textContent = ("Correct!");
   }
   else {
+    secondsLeft = secondsLeft - 15;
     correctIncorrectID.textContent = ("Incorrect.");
-  }
-
-
+  };
+  removeQuestion();
   displayQuestion();
 }
+
 
 
 // quiz-content
@@ -230,3 +232,4 @@ function checkAnswer1() {
 // add event listeners
 
 // play again button (for starting the game)
+

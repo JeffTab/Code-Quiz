@@ -65,6 +65,8 @@ function stopGame() {
   clearInterval(timerIntervalID);
   quizContentID.setAttribute("class", "hide");
   postGameScreenID.removeAttribute("class");
+  score = score + secondsLeft;
+  userScoreID.textContent = score + " points"
 };
 
 
@@ -141,6 +143,7 @@ function checkAnswer0() {
 
   if (choice0Text === answer) {
     correctIncorrectID.textContent = ("Correct!");
+    score++;
   }
   else {
     secondsLeft = secondsLeft - 15;
@@ -155,6 +158,7 @@ function checkAnswer1() {
 
   if (choice1Text === answer) {
     correctIncorrectID.textContent = ("Correct!");
+    score++;
   }
   else {
     secondsLeft = secondsLeft - 15;

@@ -36,24 +36,24 @@ playAgainButtonID.addEventListener("click", function (event) {
 
 
 
-
 var timerIntervalID = 0;
-var score = 0;
+var score;
 var secondsLeft = 0;
 var status = "notplaying";
-
+var questions;
 
 function startGame() {
 
+  questions = [...questionsBank];
 
   secondsLeft = 60;
+  score = 0;
   timeLeftID.textContent = secondsLeft + " seconds left";
   timerIntervalID = setInterval(function () {
     secondsLeft--;
     timeLeftID.textContent = secondsLeft + " seconds left";
     if (secondsLeft <= 0) {
-      stopGame();
-      return;
+      return stopGame();
     }
   }, 1000);
   displayQuestion();
@@ -66,7 +66,12 @@ function stopGame() {
   quizContentID.setAttribute("class", "hide");
   postGameScreenID.removeAttribute("class");
   score = score + secondsLeft;
-  userScoreID.textContent = score + " points"
+  if (score < 0) {
+    userScoreID.textContent = "0 points";
+  }
+  else {
+    userScoreID.textContent = score + " points";
+  };
 };
 
 
@@ -126,13 +131,13 @@ function linebreakFunction() {
 function removeQuestion() {
   questions.splice(arrayNumber, 1);
   if (questions.length == 0) {
-    stopGame();
-    return;
+    return stopGame();
+
   };
 };
 
 function clearCorrectIncorrect() {
-  setTimeout(correctIncorrectTimer, 1000);
+  setTimeout(correctIncorrectTimer, 300);
   function correctIncorrectTimer() {
     correctIncorrectID.textContent = "";
   };

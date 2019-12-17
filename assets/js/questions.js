@@ -1,4 +1,4 @@
-var questions = [
+const questionsBank = [
   {
     question: "What is a computer?",
     choices: ["A noun.", "A verb."],

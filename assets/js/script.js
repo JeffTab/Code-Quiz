@@ -25,6 +25,15 @@ startScreenID.addEventListener("click", function (event) {
   startGame();
 });
 
+playAgainButtonID.addEventListener("click", function (event) {
+  var element = event.target;
+  if (element.matches("button")) {
+    postGameScreenID.setAttribute("class", "hide");
+    quizContentID.removeAttribute("class");
+  }
+  startGame();
+});
+
 var timerIntervalID = 0;
 var score = 0;
 var secondsLeft = 0;
@@ -34,7 +43,7 @@ var status = "notplaying";
 function startGame() {
 
 
-  secondsLeft = 3;
+  secondsLeft = 20;
   timeLeftID.textContent = secondsLeft + " seconds left";
   timerIntervalID = setInterval(function () {
     secondsLeft--;
@@ -52,6 +61,108 @@ function stopGame() {
   quizContentID.setAttribute("class", "hide");
   postGameScreenID.removeAttribute("class");
 };
+
+
+
+var currentQuestion;
+var choice0;
+var choice1;
+var answer;
+var choice0Text;
+var choice1Text;
+var arrayNumber;
+
+function displayQuestion() {
+
+  arrayNumber = Math.floor(Math.random() * questions.length);
+  currentQuestion = questions[arrayNumber];
+  questionsLocationID.textContent = currentQuestion.question;
+
+  linebreakFunction()
+
+  choice0 = document.createElement("BUTTON");
+  choice0.textContent = currentQuestion.choices[0];
+  questionsLocationID.append(choice0);
+  choice0Text = currentQuestion.choices[0];
+
+  linebreakFunction()
+
+  choice1 = document.createElement("BUTTON");
+  choice1.textContent = currentQuestion.choices[1];
+  questionsLocationID.append(choice1);
+  choice1Text = currentQuestion.choices[1];
+
+  answer = currentQuestion.answer;
+
+  choice0.addEventListener("click", checkAnswer0);
+  choice1.addEventListener("click", checkAnswer1);
+
+  choice0.addEventListener("click", setTimeout(clearCorrectIncorrect, 1000));
+  choice1.addEventListener("click", setTimeout(clearCorrectIncorrect, 1000));
+
+
+
+  // if (!questions[questionIndex]) {
+  //   // stop game, we've hit last question
+  //   return stopGame();
+  // }
+};
+
+displayQuestion();
+
+function linebreakFunction() {
+  var linebreak = document.createElement("BR");
+  questionsLocationID.appendChild(linebreak);
+};
+
+
+function removeQuestion() {
+  questions.splice(questions[arrayNumber]);
+  console.log(questions);
+
+}
+
+function clearCorrectIncorrect() {
+  correctIncorrectID.textContent = "";
+}
+
+
+function checkAnswer0() {
+  console.log(choice0Text);
+  console.log(answer);
+
+  console.log("hi");
+
+  if (choice0Text === answer) {
+    correctIncorrectID.textContent = ("Correct!");
+  }
+
+  else {
+    correctIncorrectID.textContent = ("Incorrect.");
+  }
+
+
+  displayQuestion();
+}
+
+
+function checkAnswer1() {
+  console.log(choice1Text);
+  console.log(answer);
+
+  console.log("bye");
+
+  if (choice1Text === answer) {
+    correctIncorrectID.textContent = ("Correct!");
+  }
+  else {
+    correctIncorrectID.textContent = ("Incorrect.");
+  }
+
+
+  displayQuestion();
+}
+
 
 // quiz-content
 
@@ -87,10 +198,7 @@ function stopGame() {
 // create function to display a question and possible choices
 // function displayQuestion(questionIndex) {
 //   // check if questionIndex in questions array doesn't exist
-//   if (!questions[questionIndex]) {
-//     // stop game, we've hit last question
-//     return stopGame();
-//   }
+
 
 //   // get questions[questionIndex]
 //   // print question to the page
@@ -120,52 +228,5 @@ function stopGame() {
 
 
 // add event listeners
-// start game button (for starting the game)
-// quizcontent (for answering a question) -> use event delegation
+
 // play again button (for starting the game)
-
-var currentQuestion;
-var choice0;
-var choice1;
-var answer;
-
-function displayQuestion() {
-  currentQuestion = questions[Math.floor(Math.random() * questions.length)];
-  questionsLocationID.textContent = currentQuestion.question;
-
-  linebreakFunction()
-
-  choice0 = document.createElement("BUTTON");
-  choice0.textContent = currentQuestion.choices[0];
-  questionsLocationID.append(choice0);
-
-  linebreakFunction()
-
-  choice1 = document.createElement("BUTTON");
-  choice1.textContent = currentQuestion.choices[1];
-  questionsLocationID.append(choice1);
-
-  answer = currentQuestion.answer;
-  console.log(answer);
-};
-
-displayQuestion();
-
-function linebreakFunction() {
-  var linebreak = document.createElement("BR");
-  questionsLocationID.appendChild(linebreak);
-};
-
-choice0.addEventListener("click", checkAnswer);
-choice1.addEventListener("click", checkAnswer);
-
-function checkAnswer() {
-
-  console.log("hi");
-
-  // if (choice0 === answer) {
-
-
-  // }
-
-}

@@ -18,6 +18,11 @@ const questionsBank = [
     question: "My name is",
     choices: ["Poop", "Jeff"],
     answer: "Jeff"
+  },
+  {
+    question: "Why is pizza so good?",
+    choices: ["Because", "It's aight"],
+    answer: "Because"
   }
 
 ];
